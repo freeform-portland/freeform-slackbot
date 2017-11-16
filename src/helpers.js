@@ -16,7 +16,8 @@ const getSpotifyToken = async () => {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     Authorization: `Basic ${process.env.SPOTIFY_BASE64}`
                 }
-            });
+            }
+        );
 
         const { access_token } = data;
 
@@ -35,21 +36,22 @@ const getTermFromList = (list) => {
 };
 
 const handleResults = (results, token) => {
-    if (!results.total) {
+    const { tracks } = results;
+
+    if (!tracks.total) {
         return performQuery(token)
     }
 
-    const { tracks } = results;
     const extractArtistName = pathOr('Jane Child', [
-        'tracks', 'items', 0, 'artists', 0, 'name'
+        'items', 0, 'artists', 0, 'name'
     ]);
     const extractTrackName = pathOr('I don\'t Wanna Fall in Love', [
-        'tracks', 'items', 0, 'name'
+        'items', 0, 'name'
     ]);
     const artistName = extractArtistName(tracks);
     const trackName = extractTrackName(tracks);
 
-    return `You should play ${trackName} by ${artistName}.`;
+    return `You should play: ${trackName} by ${artistName}.`;
 };
 
 export const performQuery = async () => {

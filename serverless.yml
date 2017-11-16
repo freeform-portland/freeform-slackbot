@@ -23,9 +23,10 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
-  timeout: 30 
+  timeout: 30
   environment:
     SPOTIFY_BASE64: ${file(./serverless.env.yml):prod.SPOTIFY_BASE64}
+    SLACK_WEBHOOK: ${file(./serverless.env.yml):prod.SLACK_WEBHOOK}
 
 # you can overwrite defaults here
   stage: prod
